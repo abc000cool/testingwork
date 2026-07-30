@@ -21,7 +21,7 @@ export function LoginPage() {
     setBusy(true)
     setError(null)
     try {
-      await login({ username, password })
+      await login({ usernameOrEmail, password })
       navigate(from, { replace: true })
     } catch (cause) {
       setError(toMessage(cause))
