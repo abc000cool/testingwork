@@ -15,15 +15,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [status, setStatus] = useState<AuthStatus>('loading')
   const [user, setUser] = useState<Me | null>(null)
 
-  // Guards against a resolved boot request writing state after logout.
-  const mounted = useRef(true)
-  useEffect(() => {
-    mounted.current = true
-    return () => {
-      mounted.current = false
-    }
-  }, [])
-
   const dropSession = useCallback(() => {
     clearToken()
     setUser(null)
