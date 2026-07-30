@@ -192,11 +192,16 @@ export function useFavorites(options: FavoritesOptions = {}): UseFavoritesResult
     [reload],
   )
 
-  const update = useCallback(async (id: string, patch: FavoriteUpdate): Promise<Favorite> => {
-    const updated = await api.favorites.update(id, patch)
-    // In place: an edit can't move a row to a different page.
-    return updated
-  }, [])
+  const update = useCallback(
+    async (id: string, patch: FavoriteUpdate): Promise<Favorite> => {
+      const updated = await api.favorites.update(id, patch)
+      // Patch in place: an edit can't move a row to a different page, so a
+      // refetch would only cost a round trip and a flicker.
+      setItems((current) => current.map((item) => (item.id === id ? updated : item)))
+      return updated
+    },
+    [setItems],
+  )
 
   const remove = useCallback(
     async (id: string): Promise<void> => {
