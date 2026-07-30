@@ -22,12 +22,12 @@
     --panel: #161b22;
     --border: #2a313c;
 
-    --text: #ffcfcf;
-    --muted: #da7e7e;
-    --accent: #ff5858;
-    --error: #ff9d9d;
-    --ok: #f56f6f;
-    --on-accent: #260606;
+    --text: #cfe3ff;
+    --muted: #7ea6da;
+    --accent: #58a6ff;
+    --error: #9dc4ff;
+    --ok: #6fd0f5;
+    --on-accent: #061426;
   }
 }
 
