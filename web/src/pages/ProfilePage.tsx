@@ -81,7 +81,7 @@ function ProfileEditor({ username, initial, onSave }: EditorProps) {
       })
       setSaved(true)
     } catch (cause) {
-      setError(toMessage(cause))
+      setError(cause)
     } finally {
       setBusy(false)
     }
