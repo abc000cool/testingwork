@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
-import { toMessage } from '../lib/http.ts'
+import { FormError } from '../components/FormError.tsx'
 import { useAuth } from '../state/auth-context.ts'
 
 export function SignupPage() {
@@ -11,7 +11,7 @@ export function SignupPage() {
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<unknown>(null)
   const [busy, setBusy] = useState(false)
 
   async function handleSubmit(event: FormEvent) {
@@ -22,7 +22,7 @@ export function SignupPage() {
       await signup({ username, email, password })
       navigate('/profile', { replace: true })
     } catch (cause) {
-      setError(toMessage(cause))
+      setError(cause)
     } finally {
       setBusy(false)
     }
@@ -65,7 +65,7 @@ export function SignupPage() {
           />
         </label>
 
-        {error !== null && <p className="error">{error}</p>}
+        <FormError error={error} />
 
         <button type="submit" disabled={busy}>
           {busy ? 'Creating account…' : 'Create account'}

@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 
-import { toMessage } from '../lib/http.ts'
+import { FormError } from '../components/FormError.tsx'
 import { useAuth } from '../state/auth-context.ts'
 
 export function LoginPage() {
@@ -11,7 +11,7 @@ export function LoginPage() {
 
   const [usernameOrEmail, setUsernameOrEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<unknown>(null)
   const [busy, setBusy] = useState(false)
 
   const from = (location.state as { from?: string } | null)?.from ?? '/profile'
@@ -24,7 +24,7 @@ export function LoginPage() {
       await login({ usernameOrEmail, password })
       navigate(from, { replace: true })
     } catch (cause) {
-      setError(toMessage(cause))
+      setError(cause)
     } finally {
       setBusy(false)
     }
@@ -56,7 +56,7 @@ export function LoginPage() {
           />
         </label>
 
-        {error !== null && <p className="error">{error}</p>}
+        <FormError error={error} />
 
         <button type="submit" disabled={busy}>
           {busy ? 'Logging in…' : 'Log in'}
