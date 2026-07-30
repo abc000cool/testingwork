@@ -113,14 +113,14 @@ export const users = {
 export const favorites = {
   list(query: FavoriteQuery = {}, ctx: Ctx = {}): Promise<ListEnvelope<Favorite>> {
     return request<ListEnvelope<Favorite>>('/me/favorites', {
-      query: {
-        itemType: query.itemType,
-        tag: query.tag,
-        limit: query.limit,
-        offset: query.offset,
-      },
+      query: { ...query },
       signal: ctx.signal,
     })
+  },
+
+  /** Facet counts by itemType, for populating filter controls. */
+  types(ctx: Ctx = {}): Promise<FavoriteTypesResponse> {
+    return request<FavoriteTypesResponse>('/me/favorites/types', { signal: ctx.signal })
   },
 
   get(id: string, ctx: Ctx = {}): Promise<Favorite> {
