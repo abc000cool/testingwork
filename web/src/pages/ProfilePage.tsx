@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 
-import { toMessage } from '../lib/http.ts'
+import { FormError } from '../components/FormError.tsx'
 import type { ProfileLink } from '../types/contracts.ts'
 import { useAuth } from '../state/auth-context.ts'
 
