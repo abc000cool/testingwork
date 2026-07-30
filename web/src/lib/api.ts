@@ -9,7 +9,9 @@
  *   GET    /api/me
  *   PATCH  /api/me/profile
  *   GET    /api/users/:username/profile        (public)
- *   GET    /api/me/favorites                   (?itemType=&tag=&limit=&offset=)
+ *   GET    /api/users/:username/favorites      (public, same envelope + filters)
+ *   GET    /api/me/favorites                   (?itemType=&tag=&search=&limit=&offset=)
+ *   GET    /api/me/favorites/types             facet counts
  *   POST   /api/me/favorites
  *   GET    /api/me/favorites/:id
  *   PATCH  /api/me/favorites/:id
