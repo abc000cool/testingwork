@@ -47,7 +47,7 @@ function ProfileEditor({ username, initial, onSave }: EditorProps) {
   const [location, setLocation] = useState(initial.location ?? '')
   const [links, setLinks] = useState<ProfileLink[]>(initial.links)
 
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<unknown>(null)
   const [saved, setSaved] = useState(false)
   const [busy, setBusy] = useState(false)
 
