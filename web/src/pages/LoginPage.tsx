@@ -36,10 +36,10 @@ export function LoginPage() {
 
       <form onSubmit={handleSubmit} className="form">
         <label>
-          Username
+          Username or email
           <input
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={usernameOrEmail}
+            onChange={(e) => setUsernameOrEmail(e.target.value)}
             autoComplete="username"
             required
           />
