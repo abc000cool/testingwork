@@ -219,5 +219,6 @@ export function usePublicFavorites(
   username: string,
   options: FavoritesOptions = {},
 ): FavoritesQueryResult {
-  return useFavoritesQuery(username, options)
+  const [query] = useFavoritesQuery(username, options)
+  return query
 }
