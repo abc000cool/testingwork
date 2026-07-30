@@ -20,7 +20,14 @@ export function SignupPage() {
     setBusy(true)
     setError(null)
     try {
-      await signup({ username, email, password })
+      // displayName is optional server-side; omit it rather than send "".
+      const trimmedDisplayName = displayName.trim()
+      await signup({
+        username,
+        email,
+        password,
+        ...(trimmedDisplayName === '' ? {} : { displayName: trimmedDisplayName }),
+      })
       navigate('/profile', { replace: true })
     } catch (cause) {
       setError(cause)
