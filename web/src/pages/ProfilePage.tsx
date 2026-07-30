@@ -153,7 +153,7 @@ function ProfileEditor({ username, initial, onSave }: EditorProps) {
           </button>
         </fieldset>
 
-        {error !== null && <p className="error">{error}</p>}
+        <FormError error={error} />
         {saved && <p className="ok">Saved.</p>}
 
         <button type="submit" disabled={busy}>
