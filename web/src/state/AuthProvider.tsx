@@ -36,14 +36,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     api.me
       .get({ signal: controller.signal })
       .then((next) => {
-        if (!mounted.current) return
+        if (controller.signal.aborted) return
         setUser(next)
         setStatus('authenticated')
       })
       .catch(() => {
+        // An abort is OUR cleanup, not a rejected session — StrictMode runs this
+        // effect twice, and treating the first (aborted) request as a failure
+        // would call dropSession() and wipe a perfectly good token from storage.
+        if (controller.signal.aborted) return
         // A 401 already ran dropSession via onUnauthorized. Anything else
         // (backend down) still can't be treated as a valid session.
-        if (!mounted.current) return
         dropSession()
       })
 
