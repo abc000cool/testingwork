@@ -54,7 +54,17 @@ export type UseFavoritesResult = FavoritesQueryResult & {
  * (GET /api/me/favorites) or a username for the public one
  * (GET /api/users/:username/favorites) — same envelope, same filters.
  */
-function useFavoritesQuery(owner: string | null, options: FavoritesOptions): FavoritesQueryResult {
+type QueryInternals = {
+  /** Patch the loaded page without a refetch. */
+  setItems: React.Dispatch<React.SetStateAction<Favorite[]>>
+  /** Increments on every reload — the exact dependency for derived fetches. */
+  reloadToken: number
+}
+
+function useFavoritesQuery(
+  owner: string | null,
+  options: FavoritesOptions,
+): [FavoritesQueryResult, QueryInternals] {
   const limit = options.pageSize ?? 20
 
   const [itemType, setItemTypeState] = useState<string | undefined>(options.itemType)
