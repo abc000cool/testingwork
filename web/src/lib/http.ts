@@ -166,3 +166,31 @@ export function toMessage(error: unknown): string {
   if (error instanceof Error) return error.message
   return 'Something went wrong.'
 }
+
+/**
+ * Per-field messages from a VALIDATION_ERROR, so forms can explain *which*
+ * input the backend rejected instead of showing one flat sentence.
+ * Returns [] for every other failure.
+ */
+export function fieldErrors(error: unknown): FieldError[] {
+  if (!(error instanceof ApiError) || error.code !== 'VALIDATION_ERROR') return []
+  if (!Array.isArray(error.details)) return []
+
+  return error.details.flatMap((entry): FieldError[] => {
+    if (typeof entry !== 'object' || entry === null) return []
+    const { path, message } = entry as { path?: unknown; message?: unknown }
+    if (typeof path !== 'string' || typeof message !== 'string') return []
+    return [{ path, message }]
+  })
+}
+
+/**
+ * Favorites are unique per (userId, itemType, itemId); a duplicate POST is a 409
+ * carrying the existing id, so the UI can point at the row instead of dead-ending.
+ */
+export function conflictFavoriteId(error: unknown): string | null {
+  if (!(error instanceof ApiError) || error.code !== 'CONFLICT') return null
+  if (typeof error.details !== 'object' || error.details === null) return null
+  const { favoriteId } = error.details as { favoriteId?: unknown }
+  return typeof favoriteId === 'string' ? favoriteId : null
+}
