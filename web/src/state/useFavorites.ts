@@ -133,24 +133,27 @@ function useFavoritesQuery(
   const prevPage = useCallback(() => setOffset((n) => Math.max(0, n - limit)), [limit])
   const nextPage = useCallback(() => setOffset((n) => n + limit), [limit])
 
-  return {
-    items,
-    total,
-    limit,
-    offset,
-    status,
-    error,
-    itemType,
-    tag,
-    search,
-    setItemType,
-    setTag,
-    setSearch,
-    ...pagination,
-    prevPage,
-    nextPage,
-    reload,
-  }
+  return [
+    {
+      items,
+      total,
+      limit,
+      offset,
+      status,
+      error,
+      itemType,
+      tag,
+      search,
+      setItemType,
+      setTag,
+      setSearch,
+      ...pagination,
+      prevPage,
+      nextPage,
+      reload,
+    },
+    { setItems, reloadToken },
+  ]
 }
 
 /**
