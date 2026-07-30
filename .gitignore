@@ -1,3 +1,8 @@
 .switchboard/local.json
 .switchboard/*.pid
 .switchboard/cache.json
+
+node_modules/
+.env
+data/
+*.tmp
