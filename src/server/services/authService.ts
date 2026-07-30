@@ -80,7 +80,7 @@ export class AuthService {
       : this.#users.findByUsername(identifier);
 
     // Same message and same cost for both failure modes — no user enumeration.
-    const ok = await verifyPassword(input.password, user?.passwordHash ?? (await DUMMY_HASH_PROMISE));
+    const ok = await verifyPassword(input.password, user?.passwordHash ?? (await decoyHash()));
     if (!user || !ok) throw unauthorized("Incorrect username or password.");
 
     const profile = this.#profiles.findByUserId(user.id);
