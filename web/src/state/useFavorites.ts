@@ -162,21 +162,12 @@ function useFavoritesQuery(
  * instead of touching the API client, so list behaviour lives in one place.
  */
 export function useFavorites(options: FavoritesOptions = {}): UseFavoritesResult {
-  const query = useFavoritesQuery(null, options)
+  const [query, { setItems, reloadToken }] = useFavoritesQuery(null, options)
   const { reload } = query
 
   const [types, setTypes] = useState<FavoriteTypeCount[]>([])
 
   // Facet counts shift on every write, so refetch them whenever the list reloads.
-  const listLength = query.items.length
-  const mounted = useRef(true)
-  useEffect(() => {
-    mounted.current = true
-    return () => {
-      mounted.current = false
-    }
-  }, [])
-
   useEffect(() => {
     const controller = new AbortController()
     api.favorites
@@ -189,7 +180,7 @@ export function useFavorites(options: FavoritesOptions = {}): UseFavoritesResult
         if (!controller.signal.aborted) setTypes([])
       })
     return () => controller.abort()
-  }, [listLength])
+  }, [reloadToken])
 
   const create = useCallback(
     async (input: FavoriteCreate): Promise<Favorite> => {
