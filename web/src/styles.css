@@ -5,15 +5,15 @@
   --panel: #f7f8fa;
   --border: #dfe3e8;
 
-  /* Every text colour is a red. Shades stay distinct so status text is still
+  /* Every text colour is a blue. Shades stay distinct so status text is still
      separable from body copy — hue no longer carries that signal. */
-  --text: #7f1010;
-  --muted: #ad4f4f;
-  --accent: #eb1f1f;
-  --error: #9c0b0b;
-  --ok: #d62a2a;
-  /* Text on the filled red button — pale, but still in the red family. */
-  --on-accent: #ffeaea;
+  --text: #10367f;
+  --muted: #4f74ad;
+  --accent: #1f6feb;
+  --error: #0b2f9c;
+  --ok: #2a86d6;
+  /* Text on the filled blue button — pale, but still in the blue family. */
+  --on-accent: #eaf3ff;
 }
 
 @media (prefers-color-scheme: dark) {
