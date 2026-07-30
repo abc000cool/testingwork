@@ -32,5 +32,6 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
       max: num(env.AUTH_RATE_LIMIT_MAX, 20),
       windowMs: num(env.AUTH_RATE_LIMIT_WINDOW_MINUTES, 15) * 60 * 1000,
     },
+    trustProxy: env.TRUST_PROXY === "true",
   };
 }
