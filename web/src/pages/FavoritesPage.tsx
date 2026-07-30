@@ -1,8 +1,10 @@
 import { useState, type FormEvent } from 'react'
 
-import { toMessage } from '../lib/http.ts'
+import { FavoriteList } from '../components/FavoriteList.tsx'
+import { FormError } from '../components/FormError.tsx'
+import { conflictFavoriteId } from '../lib/http.ts'
 import { useFavorites } from '../state/useFavorites.ts'
-import type { Favorite } from '../types/contracts.ts'
+import type { FavoriteTypeCount } from '../types/wire.ts'
 
 function parseTags(raw: string): string[] {
   return raw
@@ -18,17 +20,24 @@ export function FavoritesPage() {
     <section className="panel">
       <h1>Your favorites</h1>
 
-      <AddFavoriteForm onCreate={favorites.create} />
+      <AddFavoriteForm onCreate={favorites.create} knownTypes={favorites.types} />
 
       <div className="filters">
         <label>
           Type
-          <input
+          <select
             value={favorites.itemType ?? ''}
             onChange={(e) => favorites.setItemType(e.target.value)}
-            placeholder="movie, article…"
-          />
+          >
+            <option value="">All types</option>
+            {favorites.types.map((type) => (
+              <option key={type.itemType} value={type.itemType}>
+                {type.itemType} ({type.count})
+              </option>
+            ))}
+          </select>
         </label>
+
         <label>
           Tag
           <input
@@ -37,34 +46,18 @@ export function FavoritesPage() {
             placeholder="filter by tag"
           />
         </label>
+
+        <label>
+          Search
+          <input
+            value={favorites.search ?? ''}
+            onChange={(e) => favorites.setSearch(e.target.value)}
+            placeholder="title, note…"
+          />
+        </label>
       </div>
 
-      {favorites.status === 'loading' && <p className="muted">Loading…</p>}
-      {favorites.status === 'error' && <p className="error">{favorites.error}</p>}
-
-      {favorites.status === 'ready' && favorites.items.length === 0 && (
-        <p className="muted">Nothing here yet.</p>
-      )}
-
-      <ul className="favorites">
-        {favorites.items.map((favorite) => (
-          <FavoriteRow key={favorite.id} favorite={favorite} onRemove={favorites.remove} />
-        ))}
-      </ul>
-
-      {favorites.total > favorites.limit && (
-        <div className="pager">
-          <button type="button" onClick={favorites.prevPage} disabled={!favorites.hasPrev}>
-            ← Previous
-          </button>
-          <span className="muted">
-            Page {favorites.page} of {favorites.pageCount} · {favorites.total} total
-          </span>
-          <button type="button" onClick={favorites.nextPage} disabled={!favorites.hasNext}>
-            Next →
-          </button>
-        </div>
-      )}
+      <FavoriteList query={favorites} onRemove={favorites.remove} />
     </section>
   )
 }
@@ -73,8 +66,10 @@ export function FavoritesPage() {
 
 function AddFavoriteForm({
   onCreate,
+  knownTypes,
 }: {
   onCreate: ReturnType<typeof useFavorites>['create']
+  knownTypes: FavoriteTypeCount[]
 }) {
   const [itemType, setItemType] = useState('')
   const [itemId, setItemId] = useState('')
@@ -82,13 +77,15 @@ function AddFavoriteForm({
   const [url, setUrl] = useState('')
   const [note, setNote] = useState('')
   const [tags, setTags] = useState('')
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<unknown>(null)
+  const [duplicateId, setDuplicateId] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault()
     setBusy(true)
     setError(null)
+    setDuplicateId(null)
     try {
       await onCreate({
         itemType: itemType.trim(),
@@ -98,13 +95,19 @@ function AddFavoriteForm({
         note: note.trim() || null,
         tags: parseTags(tags),
       })
+      // Keep itemType — people usually add several of the same kind in a row.
       setItemId('')
       setTitle('')
       setUrl('')
       setNote('')
       setTags('')
     } catch (cause) {
-      setError(toMessage(cause))
+      // Favorites are unique per (userId, itemType, itemId). A duplicate comes
+      // back as 409 carrying the existing id, so link to it instead of just
+      // reporting a failure.
+      const existing = conflictFavoriteId(cause)
+      if (existing !== null) setDuplicateId(existing)
+      else setError(cause)
     } finally {
       setBusy(false)
     }
@@ -119,9 +122,16 @@ function AddFavoriteForm({
             value={itemType}
             onChange={(e) => setItemType(e.target.value)}
             placeholder="movie"
+            list="known-item-types"
             required
           />
+          <datalist id="known-item-types">
+            {knownTypes.map((type) => (
+              <option key={type.itemType} value={type.itemType} />
+            ))}
+          </datalist>
         </label>
+
         <label>
           Item ID
           <input
@@ -154,65 +164,18 @@ function AddFavoriteForm({
         <input value={tags} onChange={(e) => setTags(e.target.value)} />
       </label>
 
-      {error !== null && <p className="error">{error}</p>}
+      <FormError error={error} />
+
+      {duplicateId !== null && (
+        <p className="error" role="alert">
+          You already saved this one.{' '}
+          <a href={`#favorite-${duplicateId}`}>Jump to it</a> — it may be on another page.
+        </p>
+      )}
 
       <button type="submit" disabled={busy}>
         {busy ? 'Adding…' : 'Add favorite'}
       </button>
     </form>
-  )
-}
-
-/* -------------------------------------------------------------------------- */
-
-function FavoriteRow({
-  favorite,
-  onRemove,
-}: {
-  favorite: Favorite
-  onRemove: (id: string) => Promise<void>
-}) {
-  const [busy, setBusy] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-
-  async function handleRemove() {
-    setBusy(true)
-    setError(null)
-    try {
-      await onRemove(favorite.id)
-    } catch (cause) {
-      setError(toMessage(cause))
-      setBusy(false)
-    }
-  }
-
-  return (
-    <li className="favorite">
-      <div className="favorite-main">
-        <span className="badge">{favorite.itemType}</span>
-        {favorite.url !== null ? (
-          <a href={favorite.url} target="_blank" rel="noreferrer noopener">
-            {favorite.title ?? favorite.itemId}
-          </a>
-        ) : (
-          <span>{favorite.title ?? favorite.itemId}</span>
-        )}
-        {favorite.note !== null && <p className="muted small">{favorite.note}</p>}
-        {favorite.tags.length > 0 && (
-          <p className="tags">
-            {favorite.tags.map((tag) => (
-              <span className="tag" key={tag}>
-                {tag}
-              </span>
-            ))}
-          </p>
-        )}
-        {error !== null && <p className="error small">{error}</p>}
-      </div>
-
-      <button type="button" className="link-button" onClick={handleRemove} disabled={busy}>
-        {busy ? 'Removing…' : 'Remove'}
-      </button>
-    </li>
   )
 }
