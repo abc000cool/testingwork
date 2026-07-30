@@ -168,7 +168,7 @@ button {
   border-radius: 6px;
   border: 1px solid transparent;
   background: var(--accent);
-  color: #ffffff;
+  color: var(--on-accent);
   padding: 0.5rem 0.9rem;
   align-self: flex-start;
 }
