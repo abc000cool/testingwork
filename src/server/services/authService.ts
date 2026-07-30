@@ -16,9 +16,11 @@ export interface AuthResult {
 /**
  * A real scrypt hash to verify against when the account does not exist, so a
  * login attempt costs the same whether or not the username is real. Without it
- * response timing tells an attacker which accounts exist.
+ * response timing tells an attacker which accounts exist. Computed once, lazily.
  */
-const DUMMY_HASH_PROMISE = hashPassword("password-that-is-never-valid");
+let dummyHash: Promise<string> | null = null;
+const decoyHash = (): Promise<string> =>
+  (dummyHash ??= hashPassword("password-that-is-never-valid"));
 
 export class AuthService {
   #users: UserRepository;
