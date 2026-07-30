@@ -56,7 +56,7 @@ export type UseFavoritesResult = FavoritesQueryResult & {
  */
 type QueryInternals = {
   /** Patch the loaded page without a refetch. */
-  setItems: React.Dispatch<React.SetStateAction<Favorite[]>>
+  setItems: Dispatch<SetStateAction<Favorite[]>>
   /** Increments on every reload — the exact dependency for derived fetches. */
   reloadToken: number
 }
