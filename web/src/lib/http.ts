@@ -11,6 +11,7 @@
  */
 
 import { isApiErrorBody } from '../types/contracts.ts'
+import type { FieldError } from '../types/wire.ts'
 import { getToken } from './token.ts'
 
 const BASE_URL: string = import.meta.env.VITE_API_BASE_URL ?? '/api'
