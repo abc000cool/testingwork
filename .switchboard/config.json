@@ -1,0 +1,8 @@
+{
+  "hubUrl": "http://localhost:7420",
+  "repoKey": "testingwork",
+  "baseBranch": "main",
+  "liveBranch": "switchboard/live",
+  "buildCmd": "npm run build",
+  "testCmd": "npm test"
+}
