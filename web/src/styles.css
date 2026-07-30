@@ -162,6 +162,13 @@ textarea {
   resize: vertical;
 }
 
+/* Placeholders are text too — the browser default grey would be the one
+   non-blue thing left on the page. */
+::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+
 button {
   font: inherit;
   cursor: pointer;
