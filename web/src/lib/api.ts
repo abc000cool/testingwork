@@ -24,6 +24,7 @@ import type {
   AuthResponse,
   FavoriteCreate,
   FavoriteQuery,
+  FavoriteTypesResponse,
   FavoriteUpdate,
   HealthResponse,
   LoginRequest,
