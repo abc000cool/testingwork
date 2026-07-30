@@ -9,7 +9,7 @@ export function LoginPage() {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const [username, setUsername] = useState('')
+  const [usernameOrEmail, setUsernameOrEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
