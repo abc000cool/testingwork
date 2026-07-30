@@ -84,10 +84,23 @@ export const me = {
 }
 
 export const users = {
-  /** Public profile view — no token required. */
+  /** Public profile view — no token required, never includes email. */
   profile(username: string, ctx: Ctx = {}): Promise<PublicProfileResponse> {
     return request<PublicProfileResponse>(`/users/${encodeURIComponent(username)}/profile`, {
       auth: false,
+      signal: ctx.signal,
+    })
+  },
+
+  /** Public favorites list — same envelope and filters as the private one. */
+  favorites(
+    username: string,
+    query: FavoriteQuery = {},
+    ctx: Ctx = {},
+  ): Promise<ListEnvelope<Favorite>> {
+    return request<ListEnvelope<Favorite>>(`/users/${encodeURIComponent(username)}/favorites`, {
+      auth: false,
+      query: { ...query },
       signal: ctx.signal,
     })
   },
