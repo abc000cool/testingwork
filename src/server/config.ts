@@ -9,6 +9,8 @@ export interface Config {
   corsOrigins: string[] | "*";
   /** Max auth attempts per IP inside the rate-limit window. */
   authRateLimit: { max: number; windowMs: number };
+  /** Honour X-Forwarded-For, so rate limiting keys on the real client IP. */
+  trustProxy: boolean;
 }
 
 function num(value: string | undefined, fallback: number): number {
