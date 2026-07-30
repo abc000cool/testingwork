@@ -52,6 +52,15 @@ export function SignupPage() {
         </label>
 
         <label>
+          Display name <span className="muted small">(optional)</span>
+          <input
+            value={displayName}
+            onChange={(e) => setDisplayName(e.target.value)}
+            autoComplete="nickname"
+          />
+        </label>
+
+        <label>
           Email
           <input
             type="email"
