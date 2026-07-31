@@ -14,7 +14,7 @@ function orNull(value: string): string | null {
 export function ProfilePage() {
   const { user, updateProfile } = useAuth()
 
-  // RequireAuth guarantees a user, but the type doesn't — keep the guard honest.
+  // RequireAuth guarantees a user, but the type doesn't, so keep the guard honest.
   if (user === null) return null
   const { profile } = user
 

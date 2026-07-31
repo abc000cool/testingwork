@@ -16,7 +16,7 @@ export function favoriteRoutes({ favoriteService }: Container): Router {
     res.json(favoriteService.list(user.id, favoriteQuerySchema.parse(req.query)));
   });
 
-  /** Facet counts by itemType — declared before /:id so it is not read as an id. */
+  /** Facet counts by itemType. Declared before /:id so it is not read as an id. */
   router.get("/types", (req, res) => {
     const { user } = authOf(req);
     res.json({ data: favoriteService.typeCounts(user.id) });

@@ -79,7 +79,7 @@ export class AuthService {
       ? this.#users.findByEmail(identifier)
       : this.#users.findByUsername(identifier);
 
-    // Same message and same cost for both failure modes — no user enumeration.
+    // Same message and same cost for both failure modes, so no user enumeration.
     const ok = await verifyPassword(input.password, user?.passwordHash ?? (await decoyHash()));
     if (!user || !ok) throw unauthorized("Incorrect username or password.");
 
@@ -100,7 +100,7 @@ export class AuthService {
 
     const user = this.#users.findById(session.userId);
     if (!user) {
-      // Orphaned session (user removed out of band) — clean it up.
+      // Orphaned session (user removed out of band); clean it up.
       await this.#sessions.remove(token);
       throw unauthorized("Your session is no longer valid.");
     }

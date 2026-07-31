@@ -41,7 +41,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setStatus('authenticated')
       })
       .catch(() => {
-        // An abort is OUR cleanup, not a rejected session — StrictMode runs this
+        // An abort is OUR cleanup, not a rejected session. StrictMode runs this
         // effect twice, and treating the first (aborted) request as a failure
         // would call dropSession() and wipe a perfectly good token from storage.
         if (controller.signal.aborted) return

@@ -4,7 +4,7 @@ import { Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../state/auth-context.ts'
 
 /**
- * Route guard. Renders nothing while the session is still resolving — without
+ * Route guard. Renders nothing while the session is still resolving. Without
  * that branch, a page refresh briefly redirects to /login before the token
  * check comes back, which looks like a random logout.
  */

@@ -22,7 +22,7 @@ export class UserRepository {
     return this.#store.data.users.find((u) => u.emailKey === key) ?? null;
   }
 
-  /** Creates the user and its profile together — a user is never profile-less. */
+  /** Creates the user and its profile together; a user is never profile-less. */
   async create(user: UserRecord, profile: ProfileRecord): Promise<UserRecord> {
     this.#store.data.users.push(user);
     this.#store.data.profiles.push(profile);

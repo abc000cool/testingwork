@@ -1,4 +1,4 @@
-# User system — backend
+# User system: backend
 
 Accounts, profiles and favorites. Node 24 + Express 5 + zod, TypeScript run
 directly by Node's built-in type stripping (no build step).
@@ -17,14 +17,14 @@ npm run typecheck
 src/server/
   index.ts          bootstrap: listen, session purge, graceful shutdown
   app.ts            express wiring (middleware order, route mounting)
-  container.ts      composition root — construct everything, inject downward
+  container.ts      composition root: construct everything, inject downward
   config.ts         environment → typed Config
   types.ts          stored records + wire types (the cross-team contract)
   schemas.ts        zod schemas; the only place request input is trusted
   serializers.ts    record → wire payload (the only place responses are shaped)
   crypto.ts         scrypt password hashing, id/token generation
   errors.ts         AppError + status helpers
-  store/            JsonStore — the only code that knows about persistence
+  store/            JsonStore, the only code that knows about persistence
   repositories/     data access over the store's arrays
   services/         business rules (auth, profile, favorites)
   middleware/       auth, cors, rateLimit, errorHandler
@@ -33,7 +33,7 @@ src/server/
 
 The layering is the point: routes never touch records, services never touch
 HTTP, and only `store/` knows where bytes live. Swapping the JSON file for
-Postgres means rewriting `repositories/` against a real client — nothing above
+Postgres means rewriting `repositories/` against a real client. Nothing above
 it changes.
 
 ## Auth
@@ -86,14 +86,14 @@ contracts; they live in `types.ts` and are produced only by `serializers.ts`.
 
 ## Behaviour worth knowing
 
-- **Favorites are unique per `(userId, itemType, itemId)`** — a repeat POST is
+- **Favorites are unique per `(userId, itemType, itemId)`.** A repeat POST is
   409 with the existing `favoriteId` in `details`, so the client can link to it.
 - **`itemType` is caller-defined.** The backend stores whatever namespace the
   frontend uses (`movie`, `article`, …) and never validates it against a list.
 - **Another user's favorite returns 404, not 403**, so ids don't leak.
 - **Tags are de-duplicated** on write.
 - Signup/login are rate limited per IP (20 per 15 min by default). The limiter
-  is in-process — it needs a shared store if this ever runs multi-instance.
+  is in-process, and it needs a shared store if this ever runs multi-instance.
 
 ## Persistence
 
@@ -101,4 +101,4 @@ contracts; they live in `types.ts` and are produced only by `serializers.ts`.
 (default `data/db.json`) after each mutation, writing to a temp file and
 renaming so a crash can't truncate the live file. Set `DATA_FILE=` empty for a
 throwaway in-memory database. Snapshot writes are serialised, but this is a
-single-process design — don't run two instances against one file.
+single-process design, so don't run two instances against one file.

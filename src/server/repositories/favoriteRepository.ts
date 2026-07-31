@@ -50,7 +50,7 @@ export class FavoriteRepository {
     };
   }
 
-  /** Distinct itemTypes a user has favourited, with counts — handy for filter UIs. */
+  /** Distinct itemTypes a user has favourited, with counts, handy for filter UIs. */
   typeCounts(userId: string): { itemType: string; count: number }[] {
     const counts = new Map<string, number>();
     for (const f of this.#store.data.favorites) {

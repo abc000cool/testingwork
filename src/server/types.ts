@@ -2,7 +2,7 @@
  * Domain records (how things are stored) and wire types (how things are sent).
  *
  * The wire types `PublicUser`, `UserProfile`, `Me` and `Favorite` are the agreed
- * cross-session contracts — see src/server/README.md. Changing their shape is a
+ * cross-session contracts; see src/server/README.md. Changing their shape is a
  * breaking change for the frontend.
  */
 
@@ -15,7 +15,7 @@ export interface UserRecord {
   usernameKey: string;
   email: string;
   emailKey: string;
-  /** `scrypt$<salt-hex>$<derived-key-hex>` — never leaves the server. */
+  /** `scrypt$<salt-hex>$<derived-key-hex>`. Never leaves the server. */
   passwordHash: string;
   createdAt: string;
   updatedAt: string;

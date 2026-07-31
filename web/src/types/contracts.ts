@@ -70,7 +70,7 @@ export type ApiErrorBody = {
   }
 }
 
-/** Narrowing helper for the error envelope — used by the HTTP layer. */
+/** Narrowing helper for the error envelope, used by the HTTP layer. */
 export function isApiErrorBody(value: unknown): value is ApiErrorBody {
   if (typeof value !== 'object' || value === null) return false
   const { error } = value as { error?: unknown }

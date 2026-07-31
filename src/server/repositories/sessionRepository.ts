@@ -31,7 +31,7 @@ export class SessionRepository {
     return true;
   }
 
-  /** Drops every session for a user — used when credentials change. */
+  /** Drops every session for a user. Used when credentials change. */
   async removeAllForUser(userId: string): Promise<number> {
     const before = this.#store.data.sessions.length;
     this.#store.data.sessions = this.#store.data.sessions.filter((s) => s.userId !== userId);

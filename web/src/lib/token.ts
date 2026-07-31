@@ -27,7 +27,7 @@ function write(token: string | null): void {
     if (token === null) window.localStorage.removeItem(STORAGE_KEY)
     else window.localStorage.setItem(STORAGE_KEY, token)
   } catch {
-    // ignore — memoryToken below is the fallback
+    // ignore; memoryToken below is the fallback
   }
 }
 

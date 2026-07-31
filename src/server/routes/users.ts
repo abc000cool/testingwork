@@ -2,7 +2,7 @@ import { Router } from "express";
 import { favoriteQuerySchema } from "../schemas.ts";
 import type { Container } from "../container.ts";
 
-/** Mounted at /api/users. Public, read-only — no token required. */
+/** Mounted at /api/users. Public, read-only; no token required. */
 export function userRoutes({ profileService, favoriteService }: Container): Router {
   const router = Router();
 

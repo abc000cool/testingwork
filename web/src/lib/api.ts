@@ -18,7 +18,7 @@
  *   DELETE /api/me/favorites/:id
  *   GET    /api/health
  *
- * Components never call `request` directly — they call these.
+ * Components never call `request` directly; they call these.
  */
 
 import type { Favorite, ListEnvelope, Me } from '../types/contracts.ts'
@@ -87,7 +87,7 @@ export const me = {
 }
 
 export const users = {
-  /** Public profile view — no token required, never includes email. */
+  /** Public profile view. No token required, never includes email. */
   profile(username: string, ctx: Ctx = {}): Promise<PublicProfileResponse> {
     return request<PublicProfileResponse>(`/users/${encodeURIComponent(username)}/profile`, {
       auth: false,
@@ -95,7 +95,7 @@ export const users = {
     })
   },
 
-  /** Public favorites list — same envelope and filters as the private one. */
+  /** Public favorites list. Same envelope and filters as the private one. */
   favorites(
     username: string,
     query: FavoriteQuery = {},

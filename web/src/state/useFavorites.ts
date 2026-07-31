@@ -26,7 +26,7 @@ export type FavoritesQueryResult = {
   itemType: string | undefined
   tag: string | undefined
   search: string | undefined
-  /** Changing any filter resets pagination — otherwise you land on an empty page. */
+  /** Changing any filter resets pagination; otherwise you land on an empty page. */
   setItemType: (value: string | undefined) => void
   setTag: (value: string | undefined) => void
   setSearch: (value: string | undefined) => void
@@ -52,12 +52,12 @@ export type UseFavoritesResult = FavoritesQueryResult & {
 /**
  * Core list machinery. `owner` is null for the authenticated user's own list
  * (GET /api/me/favorites) or a username for the public one
- * (GET /api/users/:username/favorites) — same envelope, same filters.
+ * (GET /api/users/:username/favorites): same envelope, same filters.
  */
 type QueryInternals = {
   /** Patch the loaded page without a refetch. */
   setItems: Dispatch<SetStateAction<Favorite[]>>
-  /** Increments on every reload — the exact dependency for derived fetches. */
+  /** Increments on every reload; the exact dependency for derived fetches. */
   reloadToken: number
 }
 
@@ -185,7 +185,7 @@ export function useFavorites(options: FavoritesOptions = {}): UseFavoritesResult
   const create = useCallback(
     async (input: FavoriteCreate): Promise<Favorite> => {
       const created = await api.favorites.create(input)
-      // Changes total and page boundaries — refetch rather than splice locally.
+      // Changes total and page boundaries, so refetch rather than splice locally.
       reload()
       return created
     },

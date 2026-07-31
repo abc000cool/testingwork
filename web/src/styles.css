@@ -6,13 +6,13 @@
   --border: #dfe3e8;
 
   /* Every text colour is a blue. Shades stay distinct so status text is still
-     separable from body copy — hue no longer carries that signal. */
+     separable from body copy; hue no longer carries that signal. */
   --text: #10367f;
   --muted: #4f74ad;
   --accent: #1f6feb;
   --error: #0b2f9c;
   --ok: #2a86d6;
-  /* Text on the filled blue button — pale, but still in the blue family. */
+  /* Text on the filled blue button: pale, but still in the blue family. */
   --on-accent: #eaf3ff;
 }
 
@@ -162,7 +162,7 @@ textarea {
   resize: vertical;
 }
 
-/* Placeholders are text too — the browser default grey would be the one
+/* Placeholders are text too; the browser default grey would be the one
    non-blue thing left on the page. */
 ::placeholder {
   color: var(--muted);

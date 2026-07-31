@@ -5,7 +5,7 @@ import type { FavoritesQueryResult } from '../state/useFavorites.ts'
 import type { Favorite } from '../types/contracts.ts'
 
 /**
- * Renders any favorites query — the signed-in user's or a public one. Passing
+ * Renders any favorites query, the signed-in user's or a public one. Passing
  * `onRemove` is what makes rows editable, so the public list simply omits it.
  */
 export function FavoriteList({

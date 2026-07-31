@@ -95,7 +95,7 @@ function AddFavoriteForm({
         note: note.trim() || null,
         tags: parseTags(tags),
       })
-      // Keep itemType — people usually add several of the same kind in a row.
+      // Keep itemType: people usually add several of the same kind in a row.
       setItemId('')
       setTitle('')
       setUrl('')
@@ -169,7 +169,7 @@ function AddFavoriteForm({
       {duplicateId !== null && (
         <p className="error" role="alert">
           You already saved this one.{' '}
-          <a href={`#favorite-${duplicateId}`}>Jump to it</a> — it may be on another page.
+          <a href={`#favorite-${duplicateId}`}>Jump to it</a>. It may be on another page.
         </p>
       )}
 

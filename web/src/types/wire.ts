@@ -3,7 +3,7 @@
  *
  * `contracts.ts` holds the two agreed cross-session contracts (the entity types
  * and the list/error envelopes). This file holds everything else in the API
- * surface — auth bodies, patch payloads, query params.
+ * surface: auth bodies, patch payloads, query params.
  *
  * Verified against the backend session's `src/server/` on 2026-07-30:
  * `schemas.ts` (zod request validation), `serializers.ts` (response shaping),
@@ -57,7 +57,7 @@ export type ProfileUpdate = Partial<{
   links: ProfileLink[]
 }>
 
-/** GET /api/users/:username/profile — public, never includes email. */
+/** GET /api/users/:username/profile: public, never includes email. */
 export type PublicProfileResponse = {
   user: PublicUser
   profile: UserProfile
@@ -98,7 +98,7 @@ export type FavoriteQuery = {
   offset?: number
 }
 
-/** GET /api/me/favorites/types — facet counts for filter UIs. */
+/** GET /api/me/favorites/types: facet counts for filter UIs. */
 export type FavoriteTypeCount = {
   itemType: string
   count: number
