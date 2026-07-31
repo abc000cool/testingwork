@@ -206,7 +206,7 @@ Lists are enveloped and errors are uniform, everywhere:
 | `UNAUTHORIZED` | 401 | missing, malformed, unknown or expired token; bad credentials |
 | `FORBIDDEN` | 403 | authenticated but not allowed |
 | `NOT_FOUND` | 404 | no such route, user, or favorite you own |
-| `CONFLICT` | 409 | username/email taken, or a duplicate favorite (`details.favoriteId`) |
+| `CONFLICT` | 409 | username/email taken (`details.field`), or a duplicate favorite (`details.favoriteId`) |
 | `TOO_MANY_REQUESTS` | 429 | auth rate limit hit; a `Retry-After` header comes with it |
 | `INTERNAL_ERROR` | 500 | anything unhandled — the real error is logged, never returned |
 
